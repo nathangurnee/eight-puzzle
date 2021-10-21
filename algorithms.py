@@ -1,0 +1,1 @@
+# Search algorithms used to solve the puzzle
