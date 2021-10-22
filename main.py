@@ -4,7 +4,7 @@ from puzzle import Puzzle
 if __name__ == '__main__':
     puzzle_input = input('Welcome to my 8-Puzzle Solver. Type \'1\' to use a default puzzle, or \'2\' to create your own.\n')
 
-    start_state = [1, 2, 0, 4, 5, 3, 7, 8, 6] # Default state
+    start_state = [1, 2, 3, 4, 0, 6, 7, 5, 8] # Default state
     
     if puzzle_input == '2':
         print('Enter your puzzle, using zero to represent the blank. Please only enter valid 8-puzzles. Enter the puzzle delimiting the numbers with a space. Type RETURN only when finished.\n')
@@ -19,4 +19,6 @@ if __name__ == '__main__':
     alg_input = input('\nSelect algorithm. (1) for Uniform Cost Search, (2) for the Misplaced Tile Heuristic, or (3) for the Manhattan Distance Heuristic.\n')
 
     puzzle = Puzzle(start_state, alg_input)
-    puzzle.solve()
+    puzzle.display()
+    puzzle.move_right()
+    puzzle.display()
