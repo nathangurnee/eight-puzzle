@@ -1,4 +1,5 @@
 # Functionality of the puzzle
+from algorithms import *
 
 class Puzzle():
     def __init__(self, start_state, algorithm):
@@ -30,14 +31,14 @@ class Puzzle():
     # Moves the zero tile up
     # Returns none if zero tile is in top row
     def move_up(self):
-        if (self.zero_index == 0 or self.zero_index == 1 or self.zero_index == 2):
+        if (self.zero_index < 3):
             return None
         self.swap_tile(-3)
 
     # Moves the zero tile down
     # Returns none if zero tile is in bottom row
     def move_down(self):
-        if (self.zero_index == 6 or self.zero_index == 7 or self.zero_index == 8):
+        if (self.zero_index > 5):
             return None
         self.swap_tile(3)
 
@@ -54,6 +55,10 @@ class Puzzle():
         if (self.zero_index == 2 or self.zero_index == 5 or self.zero_index == 8):
             return None
         self.swap_tile(1)
+
+    # Calculates the cost of the current state of puzzleß
+    def cost(self):
+        pass
 
     # Shows the puzzle on each step
     def display(self):

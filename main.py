@@ -19,6 +19,3 @@ if __name__ == '__main__':
     alg_input = input('\nSelect algorithm. (1) for Uniform Cost Search, (2) for the Misplaced Tile Heuristic, or (3) for the Manhattan Distance Heuristic.\n')
 
     puzzle = Puzzle(start_state, alg_input)
-    puzzle.display()
-    puzzle.move_right()
-    puzzle.display()
