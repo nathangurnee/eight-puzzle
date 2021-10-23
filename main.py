@@ -2,7 +2,7 @@
 from puzzle import Puzzle
 
 if __name__ == '__main__':
-    puzzle_input = input('Welcome to my 8-Puzzle Solver. Type \'1\' to use a default puzzle, or \'2\' to create your own.\n')
+    puzzle_input = input('Welcome to the 8-Puzzle Solver. Type \'1\' to use a default puzzle, or \'2\' to create your own.\n')
 
     start_state = [1, 2, 3, 4, 0, 6, 7, 5, 8] # Default state
     
