@@ -1,11 +1,10 @@
 # Functionality of the puzzle
-from algorithms import *
-
 class Puzzle():
     def __init__(self, start_state, algorithm):
         self.start_state = start_state # Initial puzzle config
         self.current_state = start_state # Current puzzle config
         self.goal_state = [1, 2, 3, 4, 5, 6, 7, 8, 0] # Goal config
+        self.child_states = [] # Children of current state
 
         if algorithm == '1':
             self.algorithm = 'uniform cost'
@@ -20,7 +19,7 @@ class Puzzle():
                 self.zero_index = index
 
     # Swaps the zero tile with the desired tile
-    # index_diff represents distance between zero tile and target tile
+    # index_diff Distance between zero tile and target tile
     def swap_tile(self, index_diff):
         target_index = self.zero_index + index_diff
         target_tile = self.current_state[target_index]
@@ -58,20 +57,56 @@ class Puzzle():
 
     # Calculates the cost of the current state of puzzle
     def cost(self):
+        state_cost = 0
         if self.algorithm == 'uniform cost':
-            return 0 # The cost of each node is the same
+            pass # The cost of each node is the same
         elif self.algorithm == 'misplaced tile':
-            misplaced_tile_count = 0 # Keeps track of number of misplaced tiles
+            # Keeps track of number of misplaced tiles
             for index, tile in enumerate(self.current_state):
                 if tile != self.goal_state[index]:
-                    misplaced_tile_count += 1
-            return misplaced_tile_count
+                    state_cost += 1
         elif self.algorithm == 'manhattan distance':
-            manhattan_distance = 0 # Sum of manhattan distance of all tiles
+            # Sum of manhattan distance of all tiles
             for index, tile in enumerate(self.current_state):
                 # Uses manhattan distance formula
-                manhattan_distance += abs(index // 3 - self.goal_state.index(tile) // 3) + abs(index % 3 - self.goal_state.index(tile) % 3)
-            return manhattan_distance
+                state_cost += abs(index // 3 - self.goal_state.index(tile) // 3) + abs(index % 3 - self.goal_state.index(tile) % 3)
+        return state_cost
+
+    # Finds all possible children of the current puzzle state
+    def children(self):
+        # Keeps track of current state configuration
+        original_state = list(self.current_state)
+
+        # Moves zero piece
+        # Adds to child list if it is not the parent
+        # The current state gets reassigned to the state before the move
+        self.move_up()
+        if list(self.current_state) != original_state:
+            self.child_states.append(list(self.current_state))
+            for index, tile in enumerate(original_state):
+                self.current_state[index] = tile
+            self.zero_index = original_state.index(0)
+
+        self.move_down()
+        if list(self.current_state) != original_state:
+            self.child_states.append(list(self.current_state))
+            for index, tile in enumerate(original_state):
+                self.current_state[index] = tile
+            self.zero_index = original_state.index(0)
+
+        self.move_left()
+        if list(self.current_state) != original_state:
+            self.child_states.append(list(self.current_state))
+            for index, tile in enumerate(original_state):
+                self.current_state[index] = tile
+            self.zero_index = original_state.index(0)
+
+        self.move_right()
+        if list(self.current_state) != original_state:
+            self.child_states.append(list(self.current_state))
+            for index, tile in enumerate(original_state):
+                self.current_state[index] = tile
+            self.zero_index = original_state.index(0)
 
     # Shows the puzzle on each step
     def display(self):
@@ -82,9 +117,4 @@ class Puzzle():
 
     # Handles solving the puzzle using selected algorithm
     def solve(self):
-        if self.algorithm == 'uniform cost':
-            print('uniform cost')
-        elif self.algorithm == 'misplaced tile':
-            print('misplaced tile')
-        elif self.algorithm == 'manhattan distance':
-            print('manhattan distance')
+        search(self.algorithm)
