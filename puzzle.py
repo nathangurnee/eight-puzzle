@@ -8,13 +8,7 @@ class Puzzle():
         self.current_state = start_state # Current puzzle config
         self.goal_state = [1, 2, 3, 4, 5, 6, 7, 8, 0] # Goal config
         self.child_states = [] # Children of current state
-
-        if algorithm == '1':
-            self.algorithm = 'uniform cost'
-        elif algorithm == '2':
-            self.algorithm = 'misplaced tile'
-        elif algorithm == '3':
-            self.algorithm = 'manhattan distance'
+        self.algorithm = algorithm # Algorithm of choice
 
         # Finds location of zero tile
         for index, tile in enumerate(self.current_state):
@@ -85,28 +79,32 @@ class Puzzle():
         # The current state gets reassigned to the state before the move
         self.move_up()
         if list(self.current_state) != original_state:
-            self.child_states.append(list(self.current_state))
+            up_child = Puzzle(list(self.current_state), str(self.algorithm))
+            self.child_states.append(up_child)
             for index, tile in enumerate(original_state):
                 self.current_state[index] = tile
             self.zero_index = original_state.index(0)
 
         self.move_down()
         if list(self.current_state) != original_state:
-            self.child_states.append(list(self.current_state))
+            down_child = Puzzle(list(self.current_state), str(self.algorithm))
+            self.child_states.append(down_child)
             for index, tile in enumerate(original_state):
                 self.current_state[index] = tile
             self.zero_index = original_state.index(0)
 
         self.move_left()
         if list(self.current_state) != original_state:
-            self.child_states.append(list(self.current_state))
+            left_child = Puzzle(list(self.current_state), str(self.algorithm))
+            self.child_states.append(left_child)
             for index, tile in enumerate(original_state):
                 self.current_state[index] = tile
             self.zero_index = original_state.index(0)
 
         self.move_right()
         if list(self.current_state) != original_state:
-            self.child_states.append(list(self.current_state))
+            right_child = Puzzle(list(self.current_state), str(self.algorithm))
+            self.child_states.append(right_child)
             for index, tile in enumerate(original_state):
                 self.current_state[index] = tile
             self.zero_index = original_state.index(0)
@@ -129,17 +127,6 @@ class Puzzle():
         frontier = [] # The states to be explored
         states_seen = set() # The states already explored
         
-        heapq.heappush(frontier, (self.cost(self.start_state), self.start_state))
-        for i in range(0, 10):
-            self.current_state = heapq.heappop(frontier)[1]
-            states_seen.add(tuple(self.current_state))
-            self.display()
-
-            if self.current_state != self.goal_state:
-                for child in self.children():
-                    heapq.heappush(frontier, (self.cost(child), child))
-
-            i += 1
 
                 
                 
