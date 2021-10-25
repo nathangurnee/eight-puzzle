@@ -1,10 +1,11 @@
 # Main file
-from puzzle import Puzzle
+# Used command line interface from directions
+from search_alg import search
 
 if __name__ == '__main__':
     puzzle_input = input('Welcome to the 8-Puzzle Solver. Type \'1\' to use a default puzzle, or \'2\' to create your own.\n')
 
-    start_state = [1, 2, 3, 4, 0, 6, 7, 5, 8] # Default state
+    start_state = [0,7,2,4,6,1,3,5,8] # Default state
     
     if puzzle_input == '2':
         print('Enter your puzzle, using zero to represent the blank. Please only enter valid 8-puzzles. Enter the puzzle delimiting the numbers with a space. Type RETURN only when finished.\n')
@@ -18,6 +19,8 @@ if __name__ == '__main__':
     
     alg_input = input('\nSelect algorithm. (1) for Uniform Cost Search, (2) for the Misplaced Tile Heuristic, or (3) for the Manhattan Distance Heuristic.\n')
 
+    print('\n')
+
     if alg_input == '1':
         algorithm = 'uniform cost'
     elif alg_input == '2':
@@ -25,5 +28,4 @@ if __name__ == '__main__':
     elif alg_input == '3':
         algorithm = 'manhattan distance'
 
-    puzzle = Puzzle(start_state, algorithm)
-    
+    search(start_state, algorithm)

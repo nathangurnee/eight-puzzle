@@ -1,6 +1,3 @@
-import time
-import heapq
-
 # Functionality of the puzzle
 class Puzzle():
     def __init__(self, start_state, algorithm):
@@ -11,9 +8,7 @@ class Puzzle():
         self.algorithm = algorithm # Algorithm of choice
 
         # Finds location of zero tile
-        for index, tile in enumerate(self.current_state):
-            if tile == 0:
-                self.zero_index = index
+        self.zero_index = self.current_state.index(0)
 
     # Swaps the zero tile with the desired tile
     # index_diff Distance between zero tile and target tile
@@ -65,7 +60,7 @@ class Puzzle():
         elif self.algorithm == 'manhattan distance':
             # Sum of manhattan distance of all tiles
             for index, tile in enumerate(state):
-                # Uses manhattan distance formula
+                # Uses Manhattan distance formula
                 state_cost += abs(index // 3 - self.goal_state.index(tile) // 3) + abs(index % 3 - self.goal_state.index(tile) % 3)
         return state_cost
 
@@ -111,30 +106,9 @@ class Puzzle():
 
         return self.child_states
 
-    # Shows the puzzle on each step
-    # time The amount of time the algorithm took to finish
-    # nodes The total number of nodes explored
-    # size The max queue size during the algorithm
+    # Displays the puzzle
     def display(self):
-        print('\n')
         print(self.current_state[0:3])
         print(self.current_state[3:6])
         print(self.current_state[6:9])
-
-    # Handles solving the puzzle using selected algorithm
-    def solve(self):
-        initial_time = time.time() # Initializes time
-        frontier = [] # The states to be explored
-        states_seen = set() # The states already explored
-        
-
-                
-                
-
-
-
-
-
-
-
-        final_time = time.time() - initial_time # Time to find goal state
+        print('\n')
