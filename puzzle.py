@@ -49,7 +49,7 @@ class Puzzle():
 
     # Calculates the cost of a puzzle state
     def cost(self, state):
-        state_cost = 0
+        state_cost = 1
         if self.algorithm == 'uniform cost':
             pass # The cost of each node is the same
         elif self.algorithm == 'misplaced tile':
@@ -59,9 +59,10 @@ class Puzzle():
                     state_cost += 1
         elif self.algorithm == 'manhattan distance':
             # Sum of manhattan distance of all tiles
-            for index, tile in enumerate(state):
-                # Uses Manhattan distance formula
-                state_cost += abs(index // 3 - self.goal_state.index(tile) // 3) + abs(index % 3 - self.goal_state.index(tile) % 3)
+            manhattan_d_sum = sum(abs(index // 3 - self.goal_state.index(tile) // 3) + abs(index % 3 - self.goal_state.index(tile) % 3) for index, tile in enumerate(state))
+
+            state_cost += manhattan_d_sum
+
         return state_cost
 
     # Finds all possible children of the current puzzle state
