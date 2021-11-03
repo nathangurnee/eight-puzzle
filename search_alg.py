@@ -7,13 +7,16 @@ from puzzle import Puzzle
 def search(puzzle_state, search_algorithm):
     initial_time = time.time() # Initializes time
     frontier = PriorityQueue() # Priority queue of the states to be explored
-    states_seen = set() # The states already explored
     expanded_nodes = 0 # The number nodes whose children were explored
 
     # Record of states in frontier queue
     # Keys are puzzle states
     # Values are the states' depths in the tree
     frontier_record = {}
+
+    # The states already explored
+    # Same key-value pairs as the frontier record
+    states_seen = {}
 
     # Creates a new Puzzle representing start state
     state = Puzzle(puzzle_state, search_algorithm)
@@ -24,6 +27,10 @@ def search(puzzle_state, search_algorithm):
 
     max_queue_size = len(frontier_record) # Most nodes the queue holds
 
+    state.display() # Prints starting puzzle state
+
+    print('solving...\n\n')
+
     while frontier:
         # Sets the new maximum queue size
         if len(frontier_record) > max_queue_size:
@@ -32,12 +39,11 @@ def search(puzzle_state, search_algorithm):
         # Dequeues puzzle state to be looked at
         # Records puzzle state in the states that have already been seen
         node = Puzzle(frontier.pop()[1], search_algorithm)
-        states_seen.add(tuple(list(node.current_state)))
+        states_seen[tuple(list(node.current_state))] = frontier_record[tuple(list(node.current_state))]
 
-        node.display() # Shows current state of puzzle in tree
-        
         # Puzzle solved
         if node.current_state == node.goal_state:
+            node.display()
             print('cpu time:', time.time() - initial_time, 'seconds')
             print('nodes expanded:', expanded_nodes)
             print('max queue size:', max_queue_size)
@@ -60,6 +66,30 @@ def search(puzzle_state, search_algorithm):
 
                     # Adds the puzzle state and its cost to the frontier
                     frontier.push(node_cost, list(child.current_state))
+            else:
+                # Heuristic value for the child node
+                h_n = child.cost(list(child.current_state))
+
+                if tuple(list(child.current_state)) in frontier_record:
+                    # Old cost is the heuristic + the original depth
+                    old_cost = frontier_record[tuple(list(child.current_state))] + h_n
+
+                    # New cost is the heuristic + the new depth
+                    new_cost = (frontier_record[tuple(list(node.current_state))] + 1) + h_n
+
+                    # Uses the identical node and its better cost in place of
+                    # the old node
+                    if new_cost < old_cost:
+                        frontier.update(new_cost, list(child.current_state))
+                elif tuple(list(child.current_state)) in states_seen:
+                    old_cost = states_seen[tuple(list(child.current_state))] + h_n
+                    new_cost = (states_seen[tuple(list(node.current_state))] + 1) + h_n
+                    
+                    # Puts node back in frontier if its new cost is better than # its old cost
+                    if new_cost < old_cost:
+                        frontier.push(new_cost, list(child.current_state))
+                        frontier_record[tuple(list(child.current_state))] = new_cost
+                        del states_seen[tuple(list(child.current_state))]
 
         # Removes puzzle state from the record of the frontier
         del frontier_record[tuple(list(node.current_state))]
