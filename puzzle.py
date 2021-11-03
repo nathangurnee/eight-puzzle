@@ -49,7 +49,7 @@ class Puzzle():
 
     # Calculates the cost of a puzzle state
     def cost(self, state):
-        state_cost = 1
+        state_cost = 0
         if self.algorithm == 'uniform cost':
             pass # The cost of each node is the same
         elif self.algorithm == 'misplaced tile':

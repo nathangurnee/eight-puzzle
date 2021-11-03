@@ -53,10 +53,15 @@ def search(puzzle_state, search_algorithm):
         for child in node.children():
             if tuple(list(child.current_state)) not in frontier_record:
                 if tuple(list(child.current_state)) not in states_seen:
-                    heapq.heappush(frontier, (child.cost(list(child.current_state)), list(child.current_state)))
-
                     # Increases the node's depth in the tree
                     frontier_record[tuple(list(child.current_state))] = frontier_record[tuple(list(node.current_state))] + 1
+                    
+                    # The total cost of the node, f(n), is equal to its
+                    # depth + its heuristic value
+                    node_cost = frontier_record[tuple(list(child.current_state))] + child.cost(list(child.current_state))
+
+                    # Adds the puzzle state and its cost to the frontier
+                    heapq.heappush(frontier, (node_cost, list(child.current_state)))
 
         # Removes puzzle state from the record of the frontier
         del frontier_record[tuple(list(node.current_state))]
