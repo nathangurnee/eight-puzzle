@@ -1,5 +1,5 @@
 # Functionality of the puzzle
-class Puzzle():
+class Puzzle:
     def __init__(self, start_state, algorithm):
         self.start_state = start_state # Initial puzzle config
         self.current_state = start_state # Current puzzle config

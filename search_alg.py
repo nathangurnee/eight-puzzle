@@ -1,14 +1,12 @@
-# https://docs.python.org/3/library/heapq.html
-# https://docs.python.org/2/library/sets.html
 # https://stackoverflow.com/questions/2831212/python-sets-vs-lists
 # https://www.educative.io/edpresso/what-is-uniform-cost-search
 import time
-import heapq
+from priority_queue import PriorityQueue
 from puzzle import Puzzle
 
 def search(puzzle_state, search_algorithm):
     initial_time = time.time() # Initializes time
-    frontier = [] # Priority queue of the states to be explored
+    frontier = PriorityQueue() # Priority queue of the states to be explored
     states_seen = set() # The states already explored
     expanded_nodes = 0 # The number nodes whose children were explored
 
@@ -21,7 +19,7 @@ def search(puzzle_state, search_algorithm):
     state = Puzzle(puzzle_state, search_algorithm)
     
     # Adds start state to the frontier
-    heapq.heappush(frontier, (state.cost(list(state.start_state)), puzzle_state))
+    frontier.push(state.cost(list(state.start_state)), puzzle_state)
     frontier_record[tuple(list(state.start_state))] = 0
 
     max_queue_size = len(frontier_record) # Most nodes the queue holds
@@ -33,7 +31,7 @@ def search(puzzle_state, search_algorithm):
 
         # Dequeues puzzle state to be looked at
         # Records puzzle state in the states that have already been seen
-        node = Puzzle(heapq.heappop(frontier)[1], search_algorithm)
+        node = Puzzle(frontier.pop()[1], search_algorithm)
         states_seen.add(tuple(list(node.current_state)))
 
         node.display() # Shows current state of puzzle in tree
@@ -61,7 +59,7 @@ def search(puzzle_state, search_algorithm):
                     node_cost = frontier_record[tuple(list(child.current_state))] + child.cost(list(child.current_state))
 
                     # Adds the puzzle state and its cost to the frontier
-                    heapq.heappush(frontier, (node_cost, list(child.current_state)))
+                    frontier.push(node_cost, list(child.current_state))
 
         # Removes puzzle state from the record of the frontier
         del frontier_record[tuple(list(node.current_state))]
