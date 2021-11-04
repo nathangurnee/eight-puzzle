@@ -55,8 +55,8 @@ def search(puzzle_state, search_algorithm):
         # and also is not already in the frontier
         # before adding it to the queue
         for child in node.children():
-            if tuple(list(child.current_state)) not in frontier_record:
-                if tuple(list(child.current_state)) not in states_seen:
+            if tuple(list(child.current_state)) not in states_seen:
+                if tuple(list(child.current_state)) not in frontier_record:
                     # Increases the node's depth in the tree
                     frontier_record[tuple(list(child.current_state))] = frontier_record[tuple(list(node.current_state))] + 1
                     
@@ -66,31 +66,29 @@ def search(puzzle_state, search_algorithm):
 
                     # Adds the puzzle state and its cost to the frontier
                     frontier.push(node_cost, list(child.current_state))
-            else:
-                # Heuristic value for the child node
-                h_n = child.cost(list(child.current_state))
-
-                if tuple(list(child.current_state)) in frontier_record:
-                    # Old cost is the heuristic + the original depth
+                else:
+                    h_n = child.cost(list(child.current_state))
                     old_cost = frontier_record[tuple(list(child.current_state))] + h_n
-
-                    # New cost is the heuristic + the new depth
                     new_cost = (frontier_record[tuple(list(node.current_state))] + 1) + h_n
-
-                    # Uses the identical node and its better cost in place of
-                    # the old node
+                    
+                    # If the new cost of the node in the frontier is less than
+                    # its original cost, update its cost in the froniter
                     if new_cost < old_cost:
                         frontier.update(new_cost, list(child.current_state))
-                elif tuple(list(child.current_state)) in states_seen:
-                    old_cost = states_seen[tuple(list(child.current_state))] + h_n
-                    new_cost = (states_seen[tuple(list(node.current_state))] + 1) + h_n
-                    
-                    # Puts node back in frontier if its new cost is better than # its old cost
-                    if new_cost < old_cost:
-                        frontier.push(new_cost, list(child.current_state))
-                        frontier_record[tuple(list(child.current_state))] = new_cost
-                        del states_seen[tuple(list(child.current_state))]
+                        frontier_record[tuple(list(child.current_state))] = frontier_record[tuple(list(node.current_state))] + 1
+            else: # Node as already been explored
+                h_n = child.cost(list(child.current_state))
+                old_cost = states_seen[tuple(list(child.current_state))] + h_n
+                new_cost = (frontier_record[tuple(list(node.current_state))] + 1) + h_n
 
+                # If the new cost of the already-explored node is less than its
+                # original cost, reopen the node to be explored again
+                if new_cost < old_cost:
+                    frontier.push(new_cost, list(child.current_state))
+                    frontier_record[tuple(list(child.current_state))] = new_cost
+                    del states_seen[tuple(list(child.current_state))]
+
+            
         # Removes puzzle state from the record of the frontier
         del frontier_record[tuple(list(node.current_state))]
 

@@ -1,6 +1,6 @@
 # https://docs.python.org/2/library/sets.html
 
-# Implementation of a priority queue
+# Implementation of a priority queue that can be used for the frontier
 class PriorityQueue:
     def __init__(self):
         self.queue = []

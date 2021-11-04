@@ -5,7 +5,7 @@ from search_alg import search
 if __name__ == '__main__':
     puzzle_input = input('Welcome to the 8-Puzzle Solver. Type \'1\' to use a default puzzle, or \'2\' to create your own.\n')
 
-    start_state = [1,6,7,5,0,3,4,8,2] # Default state
+    start_state = [6,4,7,8,5,0,3,2,1] # Default state
     
     if puzzle_input == '2':
         print('Enter your puzzle, using zero to represent the blank. Please only enter valid 8-puzzles. Enter the puzzle delimiting the numbers with a space. Type RETURN only when finished.\n')
