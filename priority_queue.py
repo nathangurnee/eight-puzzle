@@ -1,10 +1,8 @@
-# https://docs.python.org/2/library/sets.html
-
 # Implementation of a priority queue that can be used for the frontier
 class PriorityQueue:
     def __init__(self):
         self.queue = []
-        self.record = set()
+        self.record = set() # Keeps track of the elements in the queue
 
     # Adds an element into the queue, accounting for priority
     def push(self, priority, item):
@@ -19,7 +17,6 @@ class PriorityQueue:
 
     # Sorts the queue based on priority, imitating the behavior of a
     # priority queue
-    # https://www.geeksforgeeks.org/python-program-to-sort-a-list-of-tuples-by-second-item/
     def heapify(self):
         self.queue.sort(key=lambda x: x[0])
 

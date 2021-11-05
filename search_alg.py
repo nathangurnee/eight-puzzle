@@ -1,9 +1,8 @@
-# https://stackoverflow.com/questions/2831212/python-sets-vs-lists
-# https://www.educative.io/edpresso/what-is-uniform-cost-search
 import time
 from priority_queue import PriorityQueue
 from puzzle import Puzzle
 
+# Solves a puzzle using the A* Star search algorithm
 def search(puzzle_state, search_algorithm):
     initial_time = time.time() # Initializes time
     frontier = PriorityQueue() # Priority queue of the states to be explored
@@ -44,7 +43,7 @@ def search(puzzle_state, search_algorithm):
         # Puzzle solved
         if node.current_state == node.goal_state:
             node.display()
-            print('cpu time:', time.time() - initial_time, 'seconds')
+            print('cpu time:', (time.time() - initial_time) * 1000, 'ms')
             print('nodes expanded:', expanded_nodes)
             print('max queue size:', max_queue_size)
             print('solution depth:', frontier_record[tuple(list(node.current_state))])
@@ -88,7 +87,6 @@ def search(puzzle_state, search_algorithm):
                     frontier_record[tuple(list(child.current_state))] = new_cost
                     del states_seen[tuple(list(child.current_state))]
 
-            
         # Removes puzzle state from the record of the frontier
         del frontier_record[tuple(list(node.current_state))]
 

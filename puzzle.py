@@ -1,3 +1,5 @@
+from math import sqrt
+
 # Functionality of the puzzle
 class Puzzle:
     def __init__(self, start_state, algorithm):
@@ -6,6 +8,7 @@ class Puzzle:
         self.goal_state = [1, 2, 3, 4, 5, 6, 7, 8, 0] # Goal config
         self.child_states = [] # Children of current state
         self.algorithm = algorithm # Algorithm of choice
+        self.n = int(sqrt(len(start_state))) # Width of the puzzle (n x n)
 
         # Finds location of zero tile
         self.zero_index = self.current_state.index(0)
@@ -24,14 +27,14 @@ class Puzzle:
     def move_up(self):
         if self.zero_index < 3:
             return None
-        self.swap_tile(-3)
+        self.swap_tile(-self.n)
 
     # Moves the zero tile down
     # Returns none if zero tile is in bottom row
     def move_down(self):
         if self.zero_index > 5:
             return None
-        self.swap_tile(3)
+        self.swap_tile(self.n)
 
     # Moves the zero tile left
     # Returns none if zero tile is in left column
@@ -59,7 +62,7 @@ class Puzzle:
                     state_cost += 1
         elif self.algorithm == 'manhattan distance':
             # Sum of manhattan distance of all tiles
-            manhattan_d_sum = sum(abs(index // 3 - self.goal_state.index(tile) // 3) + abs(index % 3 - self.goal_state.index(tile) % 3) for index, tile in enumerate(state))
+            manhattan_d_sum = sum(abs(index // self.n - self.goal_state.index(tile) // self.n) + abs(index % self.n - self.goal_state.index(tile) % self.n) for index, tile in enumerate(state))
 
             state_cost += manhattan_d_sum
 
