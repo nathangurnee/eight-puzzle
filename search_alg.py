@@ -71,7 +71,7 @@ def search(puzzle_state, search_algorithm):
                     new_cost = (frontier_record[tuple(list(node.current_state))] + 1) + h_n
                     
                     # If the new cost of the node in the frontier is less than
-                    # its original cost, update its cost in the froniter
+                    # its original cost, update its cost in the frontier
                     if new_cost < old_cost:
                         frontier.update(new_cost, list(child.current_state))
                         frontier_record[tuple(list(child.current_state))] = frontier_record[tuple(list(node.current_state))] + 1

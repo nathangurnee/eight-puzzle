@@ -2,14 +2,12 @@
 class PriorityQueue:
     def __init__(self):
         self.queue = []
-        self.record = set() # Keeps track of the elements in the queue
 
     # Adds an element into the queue, accounting for priority
     def push(self, priority, item):
-        if tuple(item) not in self.record:
+        if item not in self.queue:
             self.queue.append((priority, item))
             self.heapify()
-            self.record.add(tuple(item))
 
     # Removes top-most element in queue, and returns it
     def pop(self):
@@ -22,16 +20,15 @@ class PriorityQueue:
 
     # Removes the specified element in the queue
     def delete(self, item):
-        if tuple(item) in self.record:
+        if item in self.queue:
             for index, entry in enumerate(self.queue):
                 if tuple(entry[1]) == tuple(item):
                     del self.queue[index]
-                    self.record.remove(tuple(item))
                     self.heapify()
 
     # Changes the priority of a specified element in the queue
     def update(self, priority, item):
-        if tuple(item) in self.record:
+        if item in self.queue:
             for index, entry in enumerate(self.queue):
                 if tuple(entry[1]) == tuple(item):
                     self.queue[index] = list(entry)
