@@ -5,7 +5,7 @@ class Puzzle:
     def __init__(self, start_state, algorithm):
         self.start_state = start_state # Initial puzzle config
         self.current_state = start_state # Current puzzle config
-        self.goal_state = [1, 2, 3, 4, 5, 6, 7, 8, 0] # Goal config
+        self.goal_state = [1,2,3,4,5,6,7,8,0] # Goal config
         self.child_states = [] # Children of current state
         self.algorithm = algorithm # Algorithm of choice
         self.n = int(sqrt(len(start_state))) # Width of the puzzle (n x n)
@@ -25,30 +25,26 @@ class Puzzle:
     # Moves the zero tile up
     # Returns none if zero tile is in top row
     def move_up(self):
-        if self.zero_index < 3:
-            return None
-        self.swap_tile(-self.n)
+        if self.zero_index > (self.n - 1):
+            self.swap_tile(-self.n)
 
     # Moves the zero tile down
     # Returns none if zero tile is in bottom row
     def move_down(self):
-        if self.zero_index > 5:
-            return None
-        self.swap_tile(self.n)
+        if self.zero_index < (self.n * (self.n - 1)):
+            self.swap_tile(self.n)
 
     # Moves the zero tile left
     # Returns none if zero tile is in left column
     def move_left(self):
-        if self.zero_index == 0 or self.zero_index == 3 or self.zero_index == 6:
-            return None
-        self.swap_tile(-1)
+        if self.zero_index % self.n != 0:
+            self.swap_tile(-1)
 
     # Moves the zero tile right
     # Return none if zero tile is in right column
     def move_right(self):
-        if self.zero_index == 2 or self.zero_index == 5 or self.zero_index == 8:
-            return None
-        self.swap_tile(1)
+        if (self.zero_index + 1) % self.n != 0:
+            self.swap_tile(1)
 
     # Calculates the cost of a puzzle state
     def cost(self, state):
@@ -112,7 +108,8 @@ class Puzzle:
 
     # Displays the puzzle
     def display(self):
-        print(self.current_state[0:3])
-        print(self.current_state[3:6])
-        print(self.current_state[6:9])
+        for i in range(0, self.n):
+            left = self.n * i
+            right = self.n * (i + 1)
+            print(self.current_state[left:right])
         print('\n')
